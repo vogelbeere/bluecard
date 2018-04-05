@@ -10,6 +10,5 @@ In Turnitin, blue card submissions are highlighted in the grading table, and eac
 
 Tutors also see a popup (which is hidden from students) to remind them to check for blue cards. The popup can be dragged out of the way, or closed.
 
-THIS VERSION WORKS WITH MOODLE 3.2 - I HAVE CREATED A SEPARATE ONE FOR MOODLE 3.0
+THIS VERSION WORKS WITH MOODLE 3.2 and Turnitin 1.
 
-(see https://gist.github.com/vogelbeere/073bddfc8f3d09b568990e69de37c807 for Moodle 3.0 version)
