@@ -12,8 +12,8 @@ In Turnitin 2, because the submissions table loads after the rest of the DOM, I 
 
 Tutors also see a popup (which is hidden from students) to remind them to check for blue cards. The popup can be dragged out of the way, or closed. Once it has been closed, a cookie is set so that the tutor does not see the popup again.
 
-The functionality is available for Moodle 3.0, 3.2, and 3.4 (each in a separate folder).
+The functionality is available for Moodle 3.0, 3.2, and 3.4 (each in a separate folder). The CSS was written for the Aardvark theme, so it might need tweaking for other themes. 
 
-Please note that I have created separate .js files for Turnitin and Moodle Assignments in case you are only using one of them; but if you are using both, you can ignore the separate .js files and just use `additional.html`.
+Please note that I have created separate .js files for Turnitin and Moodle Assignments in case you are only using one of them; but if you are using both, you can ignore the separate .js files and just use `additional.html` and the CSS file.
 
 NB: code is supplied 'as is' without any commitment to it being fit for purpose and is also supplied without any commitment to maintenance or support.
