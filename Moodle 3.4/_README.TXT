@@ -11,3 +11,5 @@ In Turnitin 1, blue card submissions are highlighted in the grading table, and e
 In Turnitin 2, because the submissions table loads after the rest of the DOM, I had to insert a button for tutors to highlight blue card submissions.
 
 Tutors also see a popup (which is hidden from students) to remind them to check for blue cards. The popup can be dragged out of the way, or closed.
+
+THIS VERSION WORKS WITH MOODLE 3.4, Turnitin 1, and Turnitin 2.
