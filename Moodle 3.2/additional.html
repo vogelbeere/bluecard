@@ -1,0 +1,325 @@
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36482974-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+<!-- student messages -->
+<div class="bluecardadded bounce-top" id="tiipopup" style="display: none">
+<button class="dismiss" onclick="dismiss(this);"><i class="fa fa-times fa-2x"></i></button>
+<strong>"Blue Card"</strong> is now added to the title field of your assignment. Don't delete it!
+</div>
+<div class="bluecardadded bounce-top" id="mapopup" style="display: none">
+<button class="dismiss" onclick="dismiss(this);"><i class="fa fa-times fa-2x"></i></button>
+<strong>"Blue Card"</strong> is now added as a comment below.
+</div>
+<!-- tutor messages -->
+<div class="bluecardadded bounce-top" id="tiitutormsg" style="display: none">
+<button class="dismiss" onclick="dismiss(this); setCookie('tiipopup', 'no', 365)"><i class="fa fa-times fa-2x"></i></button>
+<h4>Important message for markers</h4>
+Submissions highlighted in blue are from students with a <strong>Blue Card</strong>. <br/>
+Please follow the <a href="http://www.brookes.ac.uk/staff/academic/dyslexia-spld-service/marking-work/" target="_blank">Dyslexia/SpLD marking guidelines</a> when marking their work.
+</div>
+
+<div class="bluecardadded bounce-top" id="matutormsg" style="display: none">
+<button class="dismiss" onclick="dismiss(this); setCookie('mapopup', 'no', 365)"><i class="fa fa-times fa-2x"></i></button>
+<h4>Important - markers please check</h4>
+<p>A blue box with "Student has added comments, please review" <em><strong>could</strong></em> indicate a <strong>Blue Card</strong> has been added.</p>
+<p>Please check comments and <strong>if there is a Blue Card</strong>, please apply the <a href="http://www.brookes.ac.uk/staff/academic/dyslexia-spld-service/marking-work/" target="_blank">Dyslexia/SpLD marking guidelines</a> accordingly.</p>
+</div>
+<script type="text/javascript">
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function dismiss(el){
+  el.parentNode.style.display='none';
+  document.getElementById('bc_overlay').style.display='none';
+  addJello();
+};
+function countItems(listClass){
+    var ul = document.getElementsByClassName(listClass)[0];
+    var i=0, itemCount =0;
+    while(ul.getElementsByTagName('li') [i++]) itemCount++;
+   return itemCount;
+};
+    var TurnitinBlueCardButton =  '<input type="button" class="bluecard bounce-top" id="tiibluecard" value="Add Blue Card" title="Adds the text \'Blue Card\' at the start of your assignment title" accesskey="b"/> <a href="http://www.brookes.ac.uk/students/wellbeing/dyslexia-spld/support/blue-marking-cards/" target="_blank" title="What is the Blue Card scheme?" accesskey="?">What\'s this?</a><br/>';
+    var reminder = '<div class="fitem"><div class="fitemtitle"></div><div class="felement bcsteps">Have you added your Blue Card?</div></div>';
+
+
+if (!document.getElementById('turnitintool_style')) {
+   /* do nothing */
+} else {
+    var request = new XMLHttpRequest();
+    request.open("GET", "/local/obu_indicators/get.php?name=dyslexia_indicator", false);
+    request.send(null);
+    if (request.responseText == "Y") {
+          if (!document.getElementById('introduction')) {
+               document.getElementById('turnitintool_style').insertAdjacentHTML('beforebegin', TurnitinBlueCardButton);
+                if (!document.getElementById('fitem_id_agreement')) {
+                } else {
+                    document.getElementById('fitem_id_agreement').insertAdjacentHTML('afterend', reminder);
+                    var d = document.getElementsByClassName("dndupload-arrow")[0];
+                    d.className += " accessible";
+               }
+          }
+    }
+}
+/* EVENT LISTENER FOR TURNITIN BLUE CARD BUTTON */
+if (!document.getElementById('tiibluecard')) {
+   /* do nothing */
+} else {
+    document.getElementById("tiibluecard").addEventListener('click', function () {  
+        var title = document.getElementById('id_submissiontitle');
+        title.removeAttribute('onchange');
+        if (!title.value) {
+            title.value = ('Blue Card: '); 
+         } else {
+            title.value = ('Blue Card: ' + title.value);
+         }
+         var x = document.getElementById("tiipopup");
+         if (x.style.display === 'none') {
+                 x.style.display = 'block';
+         } else {
+             x.style.display = 'none';
+         }
+    });
+}
+
+/* hide export functionality in intro tab */
+if ((!document.getElementById('introduction')) || (countItems('nav-tabs') <= 2)) {
+   /* do nothing */
+} else {
+     document.getElementsByClassName("c5")[0].style.display='none';
+     document.getElementsByClassName("c5")[1].style.display='none';
+};
+
+/* display bouncy message to alert tutors re blue card */
+var TurnitinBlueCardInbox = '<div class="bcsteps"><h3>Important message for markers</h3>Submissions highlighted in blue are from students with a <strong>Blue Card</strong>. <br/>Please follow the <a href="http://www.brookes.ac.uk/staff/academic/dyslexia-spld-service/marking-work/" target="_blank">Dyslexia/SpLD marking guidelines</a> when marking their work.</div>';
+
+var showtiipopup = getCookie("tiipopup");
+
+if ((!document.getElementById('inboxTable')) || (countItems('nav-tabs') <= 2 || showtiipopup == 'no')) {
+    /* do nothing */
+  } else {
+         document.getElementById("tiitutormsg").style.display = 'block';
+         document.getElementById('bc_overlay').style.display='block';
+         document.getElementById("turnitintool_style").insertAdjacentHTML('beforebegin', TurnitinBlueCardInbox);
+  };
+
+/* highlight blue card in TURNITIN submission inbox table */
+if (!document.getElementById('inboxTable')) {
+   /* do nothing */
+} else {
+     var table = document.getElementById('inboxTable');
+     var tbody = table.getElementsByTagName('tbody')[0];
+     var cells = tbody.getElementsByTagName('td');
+     for (var i=0, len=cells.length; i<len; i++){
+         if (cells[i].innerText.search('Blue Card') > -1){
+             var tr =  cells[i].parentNode;
+             tr.style.backgroundColor = '#b7dbff';
+             cells[i].getElementsByTagName('a')[0].insertAdjacentHTML('afterend', ' &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.brookes.ac.uk/staff/academic/dyslexia-spld-service/marking-work/" class="bc-info" target="_blank" title="What is the Blue Card scheme?">Blue Card</a>');
+        }
+   }
+}
+
+/*when student has submitted, you sometimes get an option to resubmit */
+if (!document.getElementById('post_29_submission_form')) {
+   /* do nothing */
+} else {
+   var table = document.getElementById('inboxTable');
+     var tbody = table.getElementsByTagName('tbody')[0];
+     var cells = tbody.getElementsByTagName('td');
+     for (var i=0, len=cells.length; i<len; i++){
+         if (cells[i].innerText.search('Blue Card') > -1){
+   document.getElementById('tiibluecard').style.display = 'none';
+    var resubmitform = document.getElementById('post_29_submission_form');
+    resubmitform.insertAdjacentHTML('beforebegin', '<p class="bcsteps bounce-top"><strong>Submission successfully uploaded to Turnitin.</strong> Only use the form below if you need to resubmit.</p><br/><hr/><br/><h3>Resubmit</h3> ');
+        }
+    }
+}
+
+/* MOODLE ASSIGNMENT BLUE CARD */
+    var checkBlueCard = '<p class="bcsteps bluecardadded bounce-top"><strong>Assignment submitted</strong><br/>You can check that your blue card has been added by clicking on the comments link below. If you forgot to add it when you submitted, you can <a id="forgotmabluecard" href="#" title="Adds a comment of \'Blue Card\' to request your tutor to use the dyslexia marking scheme" accesskey="b">add it now</a>.</p>';
+    var MoodleAssignBlueCardButton =  '<p class="bcsteps" id="mabcinstructions">Step 1. Add your Blue card. <input type="button" id="mabluecard" value="Add Blue Card" class="bluecard bounce-top" title="Adds a comment of \'Blue Card\' to request your tutor to use the dyslexia marking scheme" accesskey="b"/> <a href="http://www.brookes.ac.uk/students/wellbeing/dyslexia-spld/support/blue-marking-cards/"  target="_blank" title="What is the Blue Card scheme?" accesskey="?">What\'s this?</a><br/>&nbsp;<br/>Step 2. Click the add submission button below to submit your assignment</p>';
+if (!document.getElementsByClassName('submissionstatustable')[0]) {
+   /* do nothing */
+} else {
+    var request = new XMLHttpRequest();
+    request.open("GET", "/local/obu_indicators/get.php?name=dyslexia_indicator", false);
+    request.send(null);
+    if (request.responseText == "Y") {
+           var statusCell = document.getElementsByClassName('c1')[0];
+           if(statusCell.innerText.search('No attempt') > -1) {
+                var assignTable = document.getElementsByClassName('submissionstatustable')[0];
+                assignTable.insertAdjacentHTML('beforebegin', MoodleAssignBlueCardButton);
+            }
+/* submissionstatussubmitted */
+           if (!document.getElementsByClassName('submissionstatussubmitted ')[0]) {
+                /* do nothing */
+           } else {
+                  var assignTable = document.getElementsByClassName('submissionstatustable')[0];
+                assignTable.insertAdjacentHTML('beforebegin', checkBlueCard);
+            }
+        }
+}
+/* EVENT LISTENER FOR MOODLE ASSIGNMENT BLUE CARD BUTTON */
+if (!document.getElementById('mabluecard')) {
+   /* do nothing */
+} else {
+    document.getElementById("mabluecard").addEventListener('click', function () {  
+         addBlueCard();
+    });
+}
+if (!document.getElementById('forgotmabluecard')) {
+   /* do nothing */
+} else {
+    document.getElementById("forgotmabluecard").addEventListener('click', function () {  
+         addBlueCard();
+    });
+}
+
+/* flag the Blue Card submission in the Grading Table */
+if (!document.getElementsByClassName('gradingtable')[0]) {
+   /* do nothing */ 
+} else {
+    var showmapopup = getCookie("mapopup");
+    if(showmapopup != 'no') {
+        document.getElementById("matutormsg").style.display = 'block';
+        document.getElementById('bc_overlay').style.display='block';
+    }
+    var table = document.getElementsByClassName('gradingtable')[0];
+    table.insertAdjacentHTML('beforebegin', ' <div class="addjello" style="background-color: #ccccff; width: 40%; margin: 0 auto; padding: 3px; text-align: center;"><p><button id="downloadbluecardcsv" class="bluebutton" onclick="exportTableToCSV(\'submissions.csv\')">Download list of all submissions including blue card submissions</button><br/><strong>Note:</strong> Comments <em><strong>could</strong></em> mean a <strong>Blue Card</strong> submission.</p><p>Please check comments and if there is a Blue Card, please apply the <a href="http://www.brookes.ac.uk/staff/academic/dyslexia-spld-service/marking-work/" target="_blank">Dyslexia/SpLD marking guidelines</a> accordingly.</p>');
+     var tbody = table.getElementsByTagName('tbody')[0];
+     var comments = tbody.getElementsByClassName('c10');
+        for (var i=0, len=comments.length; i<len; i++){
+        var commentText = comments[i].innerText;
+        
+        if (commentText.search('Comments') > -1){
+            var enumerator = comments[i].getElementsByTagName('span')[0];
+            
+            if (enumerator.innerText.search('0') > -1){
+                       // do nothing
+            } else {
+                var container = comments[i].getElementsByClassName('commentscontainer')[0];
+                container.insertAdjacentHTML('afterend', '<div class="bluemsg">Student has added comments, please review.</div>'); 
+            }
+        }
+    }
+}
+
+function addJello() {
+   if (!document.getElementsByClassName('gradingtable')[0]) {
+   /* do nothing */ 
+   } else {
+       var divAddJello = document.getElementsByClassName('addjello')[0];
+       divAddJello.className += ' jello';
+       var table = document.getElementsByClassName('gradingtable')[0];
+       var tbody = table.getElementsByTagName('tbody')[0];
+       var comments = tbody.getElementsByClassName('c10');
+       for (var i=0, len=comments.length; i<len; i++){
+             if (comments[i].innerText.search('Comments') > -1){
+                comments[i].className += ' jello';
+            }
+        }
+    }
+}
+
+function addBlueCard() {
+            var popup = document.getElementById("mapopup");
+         popup.classList.toggle("show");
+        var commentbox = document.getElementsByClassName('comment-area')[0];
+        var textarea = commentbox.getElementsByTagName('textarea')[0];
+        if (!textarea.value) {
+            textarea.value = ('<a href="http://www.brookes.ac.uk/staff/academic/dyslexia-spld-service/marking-work/" target="_blank" style="background-color: #99ccff; font-weight:bold;">Blue Card</a>'); 
+         } else if  (textarea.value == 'Add a comment...') {
+               textarea.value = ('<a href="http://www.brookes.ac.uk/staff/academic/dyslexia-spld-service/marking-work/" target="_blank" style="background-color: #99ccff; font-weight:bold;">Blue Card</a>'); 
+       } else {
+            textarea.value = ('<a href="http://www.brookes.ac.uk/staff/academic/dyslexia-spld-service/marking-work/" target="_blank" style="background-color: #99ccff; font-weight:bold;">Blue Card</a>: ' + textarea.value);
+         }
+    /* save the comment */
+    var commentLink = document.getElementsByClassName("comment-link")[0];
+    var linkImg = commentLink.getElementsByTagName("img")[0];
+    if(linkImg.src.search('collapsed') > -1) {
+          commentLink.click();
+     }
+    var saveLink = document.getElementsByClassName("fd")[0].getElementsByTagName("a")[0];
+     saveLink.click();
+    /* alert the user that something has happened */
+         var x = document.getElementById("mapopup");
+         if (x.style.display === 'none') {
+                   x.style.display = 'block';
+         } else {
+             x.style.display = 'none';
+         }
+}
+function downloadCSV(csv, filename) {
+    var csvFile;
+    var downloadLink;
+    // CSV file
+    csvFile = new Blob([csv], {type: "text/csv"});
+    // Download link
+    downloadLink = document.createElement("a");
+    // File name
+    downloadLink.download = filename;
+    // Create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+    // Hide download link
+    downloadLink.style.display = "none";
+    // Add the link to DOM
+    document.body.appendChild(downloadLink);
+    // Click download link
+    downloadLink.click();
+}
+function exportTableToCSV(filename) {
+    var csv = [];
+    var explanation = 'If the word *Comment* appears in the *Submission comments* or the *Feedback comments* column: the student MAY have added a blue card to their assignment \n \n';
+    csv.push(explanation);
+    var rows = document.querySelectorAll("table tr");
+    
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+        
+        for (var j = 0; j < cols.length; j++) {
+            if (cols[j].innerText.search('Comments') > -1){
+                row.push('"'+ cols[j].innerText + ' (likely to be a Blue Card, please check)"');
+            } else {
+             row.push('"'+ cols[j].innerText + '"');
+            }
+        }
+        csv.push(row.join(","));        
+    }
+    // Download CSV file
+    downloadCSV(csv.join("\n"), filename);
+}
+</script>
+
